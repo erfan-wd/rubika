@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="fa">
+<head>
+  <meta charset="UTF-8">
+  <title>هکر روبیکا</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      background-color: black;
+      color: #00ff00;
+      font-family: monospace;
+      padding: 20px;
+      direction: rtl;
+    }
+
+    h1 {
+      text-align: center;
+      color: #00ff00;
+      font-size: 24px;
+    }
+
+    .console {
+      background-color: #111;
+      border: 1px solid #00ff00;
+      padding: 20px;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    label {
+      display: block;
+      margin: 10px 0 5px;
+      font-size: 16px;
+    }
+
+    input[type="text"],
+    input[type="password"] {
+      width: 100%;
+      padding: 10px;
+      background-color: #000;
+      color: #00ff00;
+      border: 1px solid #00ff00;
+      font-size: 16px;
+      box-sizing: border-box;
+    }
+
+    button {
+      background-color: #000;
+      color: #00ff00;
+      border: 1px solid #00ff00;
+      padding: 10px 20px;
+      margin-top: 15px;
+      cursor: pointer;
+      font-size: 16px;
+      width: 100%;
+      margin-bottom: 10px;
+    }
+
+    .output {
+      margin-top: 20px;
+      color: #00ff00;
+      font-weight: bold;
+      white-space: pre-wrap;
+      min-height: 40px;
+      font-size: 16px;
+    }
+
+    .blinking-cursor {
+      display: inline-block;
+      width: 10px;
+      height: 20px;
+      background-color: #00ff00;
+      animation: blink 1s infinite;
+      margin-left: 2px;
+    }
+
+    @keyframes blink {
+      0%, 50%, 100% { opacity: 1; }
+      25%, 75% { opacity: 0; }
+    }
+
+    @media (max-width: 600px) {
+      .console {
+        padding: 15px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <h1>کنسول هکر روبیکا</h1>
+  <div class="console">
+    <form id="hackForm">
+      <label for="userId">آی‌دی کاربر مورد نظر برای تعلیق:</label>
+      <input type="text" id="userId" required>
+
+      <label for="username">نام شما در سیستم:</label>
+      <input type="text" id="username" required>
+
+      <label for="password">رمز عبور:</label>
+      <input type="password" id="password" required>
+
+      <button type="submit">شروع عملیات هک</button>
+      <button type="button" onclick="cancelHack()">لغو عملیات</button>
+    </form>
+
+    <div class="output" id="output"></div>
+  </div>
+
+  <!-- صدای تایپ -->
+  <audio id="typeSound" src="https://www.soundjay.com/mechanical/sounds/keyboard-1.mp3" preload="auto"></audio>
+
+  <script>
+    const form = document.getElementById('hackForm');
+    const output = document.getElementById('output');
+    const typeSound = document.getElementById('typeSound');
+
+    function typeWriter(text, callback) {
+      let i = 0;
+      output.innerHTML = '';
+      const cursor = document.createElement('span');
+      cursor.classList.add('blinking-cursor');
+      output.appendChild(cursor);
+
+      function type() {
+        if (i < text.length) {
+          output.insertBefore(document.createTextNode(text.charAt(i)), cursor);
+          if (text.charAt(i) !== ' ') {
+            typeSound.currentTime = 0;
+            typeSound.play();
+          }
+          i++;
+          setTimeout(type, 50);
+        } else {
+          output.removeChild(cursor);
+          if (callback) callback();
+        }
+      }
+
+      type();
+    }
+
+    form.addEventListener('submit', function(e) {
+      e.preventDefault();
+      const userId = document.getElementById('userId').value;
+      const password = document.getElementById('password').value;
+
+      if (password === 'er32') {
+        const message = `✅ عملیات هک انجام شد برای کاربر: ${userId}`;
+        typeWriter(message);
+      } else {
+        const message = 'بیا برای خودت 👍';
+        typeWriter(message);
+      }
+    });
+
+    function cancelHack() {
+      const message = '❌ عملیات هک لغو شد.';
+      typeWriter(message);
+      form.reset();
+    }
+  </script>
+
+</body>
+</html>
